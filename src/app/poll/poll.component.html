@@ -1,0 +1,30 @@
+ <nav>
+    <a routerLink="/" routerLinkActive="active">Polls</a>
+  </nav>
+
+<h1> Poll name: {{poll_name}}</h1>
+<hr>
+
+
+<h4>Select your answer: </h4>
+<form (submit) ="addVote($event)">
+<select [(ngModel)]="VoteValue" name="Vote" >
+<option  *ngFor="let poll of poll_options" [ngValue] = "poll">{{poll.answer_name}}</option>
+
+</select>
+<input type="submit" value="Submit">
+</form>
+<hr>
+
+
+<h4>Add new answers</h4>
+   <form (submit)="addAnswers($event)">
+ Additional answers (seperated by semicolon): <input type="text" [(ngModel)]="newAnswers" name="newAnswers">
+  <input type="submit" value="Submit">
+</form>
+
+<hr>
+<h4 *ngFor="let item of poll_options">Answer name: {{item.answer_name}}; number of votes: {{item.answer_vote?.length}}  <br>
+ </h4>
+
+ 
