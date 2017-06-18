@@ -15,6 +15,19 @@
 <input type="submit" value="Submit">
 </form>
 <hr>
+<p>
+  chart works!
+</p>
+
+<div style="display: block">
+  <canvas baseChart
+          [data]="chartData"
+          [labels]="chartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+</div>
 
 
 <h4>Add new answers</h4>
