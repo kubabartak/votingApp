@@ -1,22 +1,15 @@
+<h1 style="font-family: cursive"> Voting Application </h1>
+<br>
 
-
+<h3>Existing Polls:</h3>
 <div class="poll-list">
-<ol>
 
-	<li *ngFor="let poll of polls"><a routerLink="/poll/{{poll._id}}" routerLinkActive="active"> {{poll.poll_name}}
+	<li *ngFor="let poll of polls"><a style="color:black" routerLink="/poll/{{poll._id}}" routerLinkActive="active"> {{poll.poll_name}}
 	</a></li>
-	</ol>
 </div>
-
 <hr>
-<div class="create-poll">
-  <h4>Create new poll</h4>
-     <form (submit)="addPoll($event)">
- Poll name: <input type="text" [(ngModel)]="pollName" name="pollName"><br>
-  Poll answers (seperated by semicolon): <input type="text" [(ngModel)]="pollAnswer" name="pollAnswer"><br>
-  <input type="submit" value="Submit">
-</form> 
-</div>
+
+<h3>Please log in to create new polls</h3>
 
 
 

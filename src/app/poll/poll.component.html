@@ -1,23 +1,12 @@
- <nav>
-    <a routerLink="/" routerLinkActive="active">Polls</a>
-  </nav>
 
-<h1> Poll name: {{poll_name}}</h1>
+<h1> {{poll_name}}</h1> <h4>Created by {{poll_author}}</h4>
 <hr>
 
+<h4>Your vote </h4>
 
-<h4>Select your answer: </h4>
-<form (submit) ="addVote($event)">
-<select [(ngModel)]="VoteValue" name="Vote" >
-<option  *ngFor="let poll of poll_options" [ngValue] = "poll">{{poll.answer_name}}</option>
-
-</select>
-<input type="submit" value="Submit">
-</form>
+<button *ngFor="let answer of poll_options" (click)="addVote(answer)"> {{answer.answer_name}}</button>;
 <hr>
-<p>
-  chart works!
-</p>
+
 
 <div style="display: block">
   <canvas baseChart
@@ -29,15 +18,9 @@
           (chartClick)="chartClicked($event)"></canvas>
 </div>
 
-
-<h4>Add new answers</h4>
-   <form (submit)="addAnswers($event)">
- Additional answers (seperated by semicolon): <input type="text" [(ngModel)]="newAnswers" name="newAnswers">
-  <input type="submit" value="Submit">
-</form>
-
 <hr>
-<h4 *ngFor="let item of poll_options">Answer name: {{item.answer_name}}; number of votes: {{item.answer_vote?.length}}  <br>
- </h4>
+<h3 *ngFor="let item of poll_options">{{item.answer_name}} : {{item.answer_vote?.length}} votes <br>
+ </h3>
+
 
  

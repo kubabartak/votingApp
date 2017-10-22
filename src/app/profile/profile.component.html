@@ -1,0 +1,25 @@
+
+<h1 style="font-family: cursive"> Voting Application </h1>
+<h2>Hello {{profile.nickname}}</h2>
+<br>
+
+<h3>Existing Polls:</h3>
+<div class="poll-list">
+
+	<li *ngFor="let poll of polls"><a style="color:black" routerLink="/user/{{poll._id}}" routerLinkActive="active"> {{poll.poll_name}}
+	</a> <button (click)="delete(poll); $event.stopPropagation()" style="background-color: red"> Delete </button>	</li>
+</div>
+
+<hr>
+<div class="create-poll">
+  <h4>Create new poll</h4>
+     <form (submit)="addPoll($event)">
+ Poll name: <input type="text" [(ngModel)]="pollName" name="pollName"><br>
+  Poll answers (seperated by semicolon): <input type="text" [(ngModel)]="pollAnswer" name="pollAnswer"><br>
+  <input type="submit" value="Submit">
+</form> 
+</div>
+
+
+
+

@@ -1,14 +1,18 @@
 import { Component } from '@angular/core';
 import { PollsService} from '../services/polls.service';
 import {Polls} from '../../Poll';
+import {AuthService } from '../services/auth.service';
+import { AuthGuard } from '../services/auth-guard.service';
 
 @Component({
   moduleId: module.id,
   selector: 'polls',
-  templateUrl: `./polls.component.html`
+  templateUrl: `./polls.component.html`,
+  providers: [AuthGuard, AuthService],
 })
-export class PollsComponent  {
-	polls: Polls[];
+export class PollsComponent {
+
+  polls: Polls[];
 	pollName: string;
 	pollAnswer: string;
 	
@@ -19,21 +23,7 @@ export class PollsComponent  {
 		})
 	}
 
-	addPoll(event){
-		event.preventDefault();
-		var newPoll = {
-			poll_name: this.pollName,
-			poll_options: this.pollAnswer
-		}
-
-		this.pollsService.addPoll(newPoll)
-		.subscribe(poll =>{
-			this.polls.push(poll);
-			this.pollName='';
-			this.pollAnswer='';
-		})
-	}
-
 		
 	
+
 }

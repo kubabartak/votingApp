@@ -9,8 +9,8 @@ import {ChartsModule} from 'ng2-charts';
 export class ChartComponentComponent implements OnInit {
 
 // Pie
-  public pieChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-  public pieChartData:number[] = [300, 500, 100];
+  public pieChartLabels:string[] = [];
+  public pieChartData:number[] = [];
   public pieChartType:string = 'pie';
   public pieChartOptions: any = {responsive: true, 
   	maintainAspectRatio: false};

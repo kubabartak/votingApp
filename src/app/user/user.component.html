@@ -1,0 +1,33 @@
+
+<h1> {{poll_name}}</h1> <h4 style="font-style: italic;">Created by {{poll_author}}</h4>
+<img src="{{profile.picture}}" style="height: 15px; width: 15px">
+<hr>
+
+
+<h4>Your vote </h4>
+
+<button *ngFor="let answer of poll_options" (click)="addVote(answer)"> {{answer.answer_name}}</button>;
+
+<hr>
+
+
+<div style="display: block">
+  <canvas baseChart
+          [data]="chartData"
+          [labels]="chartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+</div>
+
+
+<h5>Add new answers</h5>
+   <form (submit)="addAnswers($event)">
+ Additional answers (seperated by semicolon): <input type="text" [(ngModel)]="newAnswers" name="newAnswers">
+  <input type="submit" value="Submit">
+</form>
+
+<hr>
+<h4 *ngFor="let item of poll_options">{{item.answer_name}} : {{item.answer_vote?.length}} votes <br>
+ </h4>

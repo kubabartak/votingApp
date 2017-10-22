@@ -3,6 +3,20 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 const poll = require('./models/polls');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
+const authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: "https://voting.eu.auth0.com/.well-known/jwks.json"
+    }),
+    // This is the identifier we set when we created the API
+    audience: 'https://voting.eu.auth0.com/api/v2/',
+    issuer: "https://voting.eu.auth0.com/",
+    algorithms: ['RS256']
+});
 
 //conect to database 
  
@@ -24,7 +38,7 @@ console.log('connected to db');
 // list of existing polls
 
 router.get('/polls', function(req, res){
-    poll.find({}).limit(20).exec(function(err, posts){
+    poll.find({}).sort({createdAt: -1}).limit(10).exec(function(err, posts){
             if (err) {return res.send("Error reading db");} 
             else if (posts===null) {return res.send("No such poll");} else {
                 res.json(posts)
@@ -32,6 +46,16 @@ router.get('/polls', function(req, res){
         })
     })
 
+// list of existing poll of a logged user
+
+router.get('/profile/:id', function(req, res){
+    poll.find({poll_author_id: req.params.id}).sort({createdAt: -1}).exec(function(err, posts){
+            if (err) {return res.send("Error reading db");} 
+            else if (posts===null) {return res.send("No such poll");} else {
+                res.json(posts)
+            }
+        })
+    })
 
 // create new Poll
 router.post('/newPoll', function(req, res){
@@ -41,14 +65,13 @@ var options=[];
 for (var i=0; i<optionsSplitted.length; i++){
     options.push({answer_name: optionsSplitted[i],
         answer_vote: '' })
-
-    
 }
-
 
     var pollEntry= new poll ({
     poll_name: req.body.poll_name,
-    poll_options: options
+    poll_options: options,
+    poll_author: req.body.poll_author,
+    poll_author_id: req.body.poll_author_id
   });
     pollEntry.save(function(err){
                 if (err) {
@@ -73,7 +96,15 @@ for (var i=0; i<optionsSplitted.length; i++){
         })
 
     })
+// remove poll
 
+router.delete('/delete/:id', function(req, res){
+    poll.findOneAndRemove({_id: req.params.id}, function(err){
+        if (err)
+            res.send(err);
+        else res.json({message: 'Poll deleted'})
+    })
+})
 
 // add new answers submitted via newAnswer form
     router.post('/poll/:id', function(request, response){
@@ -107,7 +138,19 @@ for (var i=0; i<newAnswers.length; i++){
 
 
         }); 
+// authpath
 
+router.get('/user/', authCheck, function(req, res){
+        
+        poll.findOne({_id: req.params.id}, function(err, db) {
+            if (err) {return res.send("Error reading db");} 
+            else if (db===null) {return res.send("No such poll");} else {
+                 res.json(db);
+            }
+        
+        })
+
+    })
 
 
 module.exports = router;
